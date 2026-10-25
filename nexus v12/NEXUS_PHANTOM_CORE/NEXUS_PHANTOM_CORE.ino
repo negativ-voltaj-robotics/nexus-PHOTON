@@ -16,14 +16,14 @@
 #include <ESP8266WebServer.h>
 #include <LittleFS.h>
 
-const char* WIFI_SSID     = "wifi_2.4";
-const char* WIFI_PASSWORD = "wifi_2.4";
+const char* WIFI_SSID     = "your wifi";
+const char* WIFI_PASSWORD = "your wifi password";
 
-const char* AP_SSID       = "nexus";
-const char* AP_PASSWORD   = "12345678";
+const char* AP_SSID       = "name";
+const char* AP_PASSWORD   = "password";
 
-const char* ADMIN_PASSWORD = "admin";
-const char* USER_PASSWORD  = "user";
+const char* ADMIN_PASSWORD = "admin password";
+const char* USER_PASSWORD  = "user password";
 
 static const uint8_t GPIO_COUNT = 4;
 // NodeMCU labels: D1=GPIO5, D2=GPIO4, D5=GPIO14, D6=GPIO12
