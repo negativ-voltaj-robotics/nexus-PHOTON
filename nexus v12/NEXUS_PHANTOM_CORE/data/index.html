@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXUS :: PHANTOM CORE</title>
+<style>
+:root{--bg:#08090b;--panel:#101216;--panel2:#15181e;--line:#343943;--red:#ff243b;--red2:#a90d23;--hot:#ff5264;--text:#e7e9ee;--muted:#858c98;--green:#6cf0a1;--amber:#ffca70;--mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#381018 0,transparent 40%),var(--bg);color:var(--text);font:14px var(--mono);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.11;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px);mix-blend-mode:overlay}
+button,input{font:inherit}button{cursor:pointer;border:1px solid var(--red2);background:#250b11;color:#ffb5bd;padding:9px 12px;text-transform:uppercase;letter-spacing:.08em;transition:.15s}button:hover{background:var(--red2);color:white;box-shadow:0 0 18px #ff243b35}button:disabled{opacity:.45;cursor:not-allowed}
+input{background:#080a0d;color:var(--text);border:1px solid #4a2029;padding:11px;width:100%;outline:none}input:focus{border-color:var(--red);box-shadow:0 0 0 2px #ff243b1c}
+a{color:#ff7180}.hidden{display:none!important}.muted{color:var(--muted)}.red{color:var(--red)}.green{color:var(--green)}.amber{color:var(--amber)}
+#login{min-height:100vh;display:grid;place-items:center;padding:22px}.loginbox{width:min(500px,100%);border:1px solid #6c1c2b;background:#0b0d11eF;box-shadow:0 0 60px #ff17301a;position:relative;padding:26px}.loginbox:before{content:"";position:absolute;left:-1px;top:-1px;width:85px;height:3px;background:var(--red);box-shadow:0 0 18px var(--red)}
+.logo{font-weight:900;letter-spacing:.14em;color:#fff;font-size:clamp(22px,4vw,34px);text-shadow:0 0 22px #ff243b4d}.logo span{color:var(--red)}.ascii{color:#d8233c;white-space:pre;line-height:1.1;font-size:11px;margin:20px 0;overflow:hidden}.field{margin:13px 0}.field label{display:block;font-size:11px;color:#aab0bb;margin-bottom:7px;letter-spacing:.15em;text-transform:uppercase}.error{min-height:20px;color:#ff6575;font-size:12px;margin-top:8px}
+#app{max-width:1500px;margin:auto;padding:14px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-left:3px solid var(--red);background:#0d0f13;padding:14px 16px;margin-bottom:12px}.brand{font-weight:900;font-size:17px;letter-spacing:.1em}.brand b{color:var(--red)}.topright{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.pill{font-size:11px;border:1px solid #3a404b;padding:6px 8px;color:var(--muted)}.pill.live{color:var(--green);border-color:#24563c}.layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(280px,.8fr);gap:12px}.stack{display:grid;gap:12px;align-content:start}.panel{background:linear-gradient(135deg,#111419,#0b0d11);border:1px solid var(--line);min-width:0}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);background:#15181e;font-size:11px;letter-spacing:.13em;color:#c7cbd3}.panelhead .mark{color:var(--red);font-weight:bold}.panelbody{padding:12px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.stat{border:1px solid #2d323b;background:#0a0c10;padding:10px;min-width:0}.stat .k{color:var(--muted);font-size:10px;letter-spacing:.1em;text-transform:uppercase}.stat .v{font-size:17px;margin-top:7px;overflow-wrap:anywhere}.channels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.channel{border:1px solid #383d47;background:#0a0c10;padding:12px}.channel.on{border-color:var(--red);box-shadow:inset 3px 0 var(--red),0 0 22px #ff243b0d}.ch-top{display:flex;justify-content:space-between;align-items:center;gap:8px}.ch-name{font-weight:bold}.state{font-size:10px;color:var(--muted)}.state.on{color:var(--red)}.pin{color:var(--muted);font-size:11px;margin:7px 0 12px}.actions{display:flex;gap:6px}.actions button{flex:1;padding:8px 5px}.actions .onbtn{background:#430b15;color:#fff}.actions .offbtn{background:#15181e;border-color:#343943;color:#c7cbd3}
+.terminal{background:#050607;border:1px solid #3e1b23;min-height:310px;display:flex;flex-direction:column}.termbar{display:flex;justify-content:space-between;padding:8px 10px;color:#a4a9b2;border-bottom:1px solid #2a161b;font-size:11px}.termout{padding:12px;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;height:270px;color:#c5c9d1;line-height:1.55}.termout .ok{color:var(--green)}.termout .bad{color:#ff6575}.termout .sys{color:#ff4b60}.cmdline{display:flex;border-top:1px solid #35161d;padding:8px;gap:8px;align-items:center}.prompt{color:var(--red);white-space:nowrap}.cmdline input{border:0;background:transparent;padding:8px 0;box-shadow:none}.cmdline button{padding:7px 11px}.quickcmd{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}.quickcmd button{font-size:10px;padding:6px 8px}
+.rows{display:grid;gap:7px}.rowline{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px dashed #2b3038}.rowline:last-child{border:0}.rowline span:first-child{color:var(--muted)}.scrolltext{white-space:pre-wrap;overflow-wrap:anywhere;max-height:240px;overflow:auto;line-height:1.5}.notice{border-left:2px solid var(--amber);padding:9px 10px;background:#241a0d;color:#d8c29e;font-size:11px;line-height:1.5}.footer{padding:18px 3px;color:#666e7b;font-size:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.topbar{align-items:flex-start;flex-direction:column}.topright{width:100%;justify-content:space-between}}
+@media(max-width:460px){#app{padding:7px}.panelbody{padding:9px}.channels{grid-template-columns:1fr}.stat .v{font-size:15px}.ascii{font-size:9px}}
+</style>
+</head>
+<body>
+<section id="login">
+  <div class="loginbox">
+    <div class="logo">NEXUS<span>::</span>PHANTOM CORE</div>
+    <div class="muted" style="margin-top:8px;letter-spacing:.16em;font-size:11px">LOCAL DEVICE CONTROL // BUILD 1.0</div>
+    <div class="ascii">   _   __ _____  _______  __  __
+  / | / // ____/ / ___/ / / / /
+ /  |/ // __/    \__ \ / /_/ /
+/ /|  // /___   ___/ // __  /
+/_/ |_/_____/  /____//_/ /_/</div>
+    <div class="field"><label for="username">Identity</label><input id="username" autocomplete="username" value="admin" spellcheck="false"></div>
+    <div class="field"><label for="password">Access key</label><input id="password" type="password" autocomplete="current-password" placeholder="Enter access key"></div>
+    <button id="loginBtn" style="width:100%;margin-top:8px" onclick="login()">[ establish session ]</button>
+    <div id="loginError" class="error"></div>
+    <div class="muted" style="font-size:11px;line-height:1.6">Fallback AP: <span class="red">NEXUS-PHANTOM-CORE</span><br>URL: <span class="red">http://192.168.4.1/</span></div>
+  </div>
+</section>
+
+<main id="app" class="hidden">
+  <header class="topbar">
+    <div><div class="brand">NEXUS<b>::</b>PHANTOM CORE <span class="muted" style="font-size:11px">v1.0</span></div><div class="muted" style="font-size:10px;margin-top:5px">ESP8266 CONTROL PLANE / LOCAL SHELL</div></div>
+    <div class="topright"><span class="pill live" id="liveState">● SESSION ACTIVE</span><span class="pill" id="rolePill">ROLE: ADMIN</span><button onclick="logout()">[ logout ]</button></div>
+  </header>
+  <section class="panel" style="margin-bottom:12px">
+    <div class="panelhead"><span><span class="mark">01</span> // LIVE TELEMETRY</span><span id="lastUpdate" class="muted">WAITING FOR DATA</span></div>
+    <div class="panelbody"><div class="stats">
+      <div class="stat"><div class="k">Router link</div><div class="v" id="sWifi">--</div></div>
+      <div class="stat"><div class="k">Station IP</div><div class="v" id="sIp">--</div></div>
+      <div class="stat"><div class="k">RSSI</div><div class="v" id="sRssi">--</div></div>
+      <div class="stat"><div class="k">Free heap</div><div class="v" id="sHeap">--</div></div>
+    </div></div>
+  </section>
+  <div class="layout">
+    <div class="stack">
+      <section class="panel">
+        <div class="panelhead"><span><span class="mark">02</span> // EXTERNAL GPIO MATRIX</span><button onclick="runCmd('alloff')">[ all off ]</button></div>
+        <div class="panelbody"><div class="channels" id="channels">
+          <div class="channel"><div class="ch-name">CH01</div><div class="pin">D1 / GPIO5</div><div class="muted">Waiting for telemetry…</div></div>
+        </div><div class="muted" style="font-size:10px;margin-top:10px">4 logic outputs only. Use driver modules for relays, motors or other loads.</div></div>
+      </section>
+      <section class="panel">
+        <div class="panelhead"><span><span class="mark">03</span> // COMMAND SHELL</span><span class="muted">TYPE help</span></div>
+        <div class="panelbody">
+          <div class="terminal">
+            <div class="termbar"><span>root@nexus:~ <span class="red">●</span></span><span id="termClock">TTY/WEB</span></div>
+            <div id="termout" class="termout"><span class="sys">NEXUS PHANTOM CORE v1.0</span>
+Local command interpreter initialized.
+Type <span class="ok">help</span> to list commands.
+This is a device shell, not a full Linux OS.</div>
+            <form class="cmdline" onsubmit="submitCmd(event)"><span class="prompt">nexus<span id="promptRole">#</span></span><input id="command" placeholder="enter command…" autocomplete="off" spellcheck="false"><button type="submit">RUN ↵</button></form>
+          </div>
+          <div class="quickcmd"><button onclick="runCmd('help')">help</button><button onclick="runCmd('status')">status</button><button onclick="runCmd('wscan')">wscan</button><button onclick="runCmd('gpio list')">gpio list</button><button onclick="runCmd('log')">log</button><button onclick="runCmd('beep')">beep</button><button onclick="runCmd('scene safe')">scene safe</button></div>
+        </div>
+      </section>
+    </div>
+    <div class="stack">
+      <section class="panel">
+        <div class="panelhead"><span><span class="mark">04</span> // NETWORK SNAPSHOT</span><button onclick="runCmd('netinfo')">[ refresh ]</button></div>
+        <div class="panelbody"><div class="rows">
+          <div class="rowline"><span>Wi-Fi state</span><b id="nState">--</b></div>
+          <div class="rowline"><span>SSID</span><b id="nSsid" style="text-align:right;overflow-wrap:anywhere">--</b></div>
+          <div class="rowline"><span>Gateway</span><b id="nGateway">via shell</b></div>
+          <div class="rowline"><span>AP address</span><b>192.168.4.1</b></div>
+          <div class="rowline"><span>Uptime</span><b id="nUptime">--</b></div>
+          <div class="rowline"><span>Chip ID</span><b id="nChip">--</b></div>
+        </div><div class="quickcmd"><button onclick="runCmd('wifi')">wifi status</button><button onclick="runCmd('netinfo')">netinfo</button><button onclick="runCmd('wscan')">scan nearby Wi-Fi</button></div></div>
+      </section>
+      <section class="panel">
+        <div class="panelhead"><span><span class="mark">05</span> // EVENT JOURNAL</span><button onclick="refreshEvents()">[ refresh ]</button></div>
+        <div class="panelbody"><div id="events" class="scrolltext muted">Waiting for event journal…</div></div>
+      </section>
+      <section class="panel">
+        <div class="panelhead"><span><span class="mark">06</span> // SECURITY / LIMITATIONS</span></div>
+        <div class="panelbody">
+          <div class="notice">The buzzer reports boot, successful admin web login and 3 consecutive failed web-console logins. It cannot hear or monitor login attempts to your router.</div>
+          <p class="muted" style="font-size:11px;line-height:1.6">Nearby Wi-Fi scan ≠ router client list. The ESP8266 does not inspect all LAN traffic. For LAN inventory, traffic graphs and router authentication events, integrate your router or the future server.</p>
+          <p class="muted" style="font-size:11px;line-height:1.6">HTTP is unencrypted. Keep this device on a trusted LAN; do not expose port 80 to the internet. Change the default passwords in the sketch before using it seriously.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <footer class="footer"><span>NEXUS / PHANTOM CORE // LOCAL CONTROL ONLY</span><span>ESP8266 • LittleFS • HTTP API • RAM EVENT LOG</span></footer>
+</main>
+<script>
+let token = sessionStorage.getItem('nexusToken') || '';
+let role = sessionStorage.getItem('nexusRole') || '';
+const $ = id => document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function appendTerm(text, cls=''){
+  const out=$('termout'); const line=document.createElement('div');
+  if(cls) line.className=cls; line.textContent=text;
+  out.appendChild(line); out.scrollTop=out.scrollHeight;
+  while(out.children.length>160) out.removeChild(out.firstChild);
+}
+function showApp(){ $('login').classList.add('hidden');$('app').classList.remove('hidden');$('rolePill').textContent='ROLE: '+role.toUpperCase();$('promptRole').textContent=role==='admin'?'#':'$';refreshAll(); }
+async function login(){
+  const username=$('username').value.trim(), password=$('password').value;
+  $('loginError').textContent='AUTHENTICATING…';
+  try{
+    const res=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({username,password})});
+    const data=await res.json();
+    if(!res.ok||!data.ok) throw new Error(data.error||'Access denied');
+    token=data.token;role=data.role;sessionStorage.setItem('nexusToken',token);sessionStorage.setItem('nexusRole',role);
+    $('password').value='';$('loginError').textContent='';showApp();appendTerm('session established as '+role,'ok');
+  }catch(e){$('loginError').textContent='[ DENIED ] '+e.message;}
+}
+async function api(path,opts={}){
+  opts.headers=Object.assign({},opts.headers||{}, {'X-Session-Token':token});
+  const res=await fetch(path,opts);
+  if(res.status===401){logoutLocal();throw new Error('Session expired; log in again.');}
+  const data=await res.json();
+  if(!res.ok) throw new Error(data.output||data.error||'Request failed');
+  return data;
+}
+function logoutLocal(){token='';role='';sessionStorage.removeItem('nexusToken');sessionStorage.removeItem('nexusRole');$('app').classList.add('hidden');$('login').classList.remove('hidden');$('loginError').textContent='Session ended.';}
+async function logout(){try{await api('/api/logout',{method:'POST'});}catch(e){}logoutLocal();}
+async function runCmd(cmd){
+  if(!token){appendTerm('No session. Log in first.','bad');return;}
+  if(cmd==='clear'){$('termout').innerHTML='';return;}
+  appendTerm('nexus'+(role==='admin'?'#':'$')+' '+cmd,'sys');
+  try{const data=await api('/api/cmd',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({cmd})});appendTerm(data.output||'(no output)');if(cmd==='logout')logoutLocal();await refreshStatus();}
+  catch(e){appendTerm('[ERROR] '+e.message,'bad');}
+}
+function submitCmd(e){e.preventDefault();const input=$('command');const cmd=input.value.trim();input.value='';if(cmd)runCmd(cmd);}
+async function gpio(channel,action){
+  try{const data=await api('/api/gpio',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({channel,action})});appendTerm('CH'+channel+' => '+data.state,'ok');await refreshStatus();}
+  catch(e){appendTerm('[GPIO ERROR] '+e.message,'bad');}
+}
+function renderChannels(list){
+  $('channels').innerHTML=list.map(g=>`<div class="channel ${g.state?'on':''}"><div class="ch-top"><div class="ch-name">CH${String(g.n).padStart(2,'0')}</div><div class="state ${g.state?'on':''}">${g.state?'● ON':'○ OFF'}</div></div><div class="pin">${esc(g.pin)}</div><div class="actions"><button class="onbtn" onclick="gpio(${g.n},'on')">ON</button><button class="offbtn" onclick="gpio(${g.n},'off')">OFF</button><button onclick="gpio(${g.n},'toggle')">TOGGLE</button></div></div>`).join('');
+}
+async function refreshStatus(){
+  try{
+    const d=await api('/api/status');
+    $('sWifi').innerHTML=d.wifi_connected?'<span class="green">ONLINE</span>':'<span class="amber">AP FALLBACK</span>';
+    $('sIp').textContent=d.wifi_connected?d.ip:d.ap_ip;
+    $('sRssi').textContent=d.wifi_connected?d.rssi+' dBm':'--';
+    $('sHeap').textContent=Math.round(d.heap/1024)+' KB';
+    $('nState').textContent=d.wifi_connected?'CONNECTED':'AP ONLY';
+    $('nSsid').textContent=d.ssid;
+    $('nUptime').textContent=d.uptime;
+    $('nChip').textContent=d.chip;
+    $('lastUpdate').textContent='UPDATED '+new Date().toLocaleTimeString();
+    renderChannels(d.gpio);
+  }catch(e){$('liveState').textContent='● API ERROR';}
+}
+async function refreshEvents(){
+  try{const d=await api('/api/events');$('events').textContent=d.text||'No events';}
+  catch(e){$('events').textContent=e.message;}
+}
+async function refreshAll(){await refreshStatus();await refreshEvents();}
+$('password').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+$('command').addEventListener('keydown',e=>{if(e.key==='ArrowUp'){e.preventDefault();$('command').value='help';}});
+if(token&&role){showApp();}else{$('username').focus();}
+setInterval(()=>{if(token)refreshStatus();},5000);
+</script>
+</body>
+</html>
